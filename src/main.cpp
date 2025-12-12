@@ -15,6 +15,7 @@ const char* mqttUser = "";
 const char* mqttPassword = "";
 
 int Value;
+uint16_t val=0;
 #define Adcpin 36   
 #define LED1 2
 #define LED2 23
@@ -45,20 +46,25 @@ void callback(String topic, byte* payload, unsigned int length) {
       Serial.println("OFF");
     }
   }
-  if (topic == "LED2"){
+  if (topic == "pwm"){
     for (int i = 0; i < length; i++) {
       msg += (char)payload[i];
     }
     Serial.println(msg);
     Serial.print("LED2 status: ");
-    if (msg == "ON"){ 
+   /* if (msg == "ON"){ 
       digitalWrite(LED2, HIGH);
       Serial.println("ON"); 
     }
     else if (msg == "OFF"){ 
       digitalWrite(LED2, LOW);
       Serial.println("OFF");
-    }
+
+    }*/
+    val = msg.toInt();
+    uint16_t pwmValue = map(val,0,100,0,1023);
+    analogWrite(LED2,pwmValue);
+    Serial.print("PWM Value: ");
   }
   Serial.println();
   delay(10);   
@@ -86,7 +92,7 @@ void setup() {
     if (client.connect("userid")) { 
       Serial.println("Connected to MQTT");
       client.subscribe("LED1");            //SUBSCRIBE TOPIC
-      client.subscribe("LED2");
+      client.subscribe("pwm");
     } else {
       Serial.print("Failed with state ");
       Serial.print(client.state());
