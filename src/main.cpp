@@ -7,9 +7,9 @@
 
 DHT dht(DHTPin, DHTTYPE);
 
-const char* ssid = "gnet442663";
-const char* password = "zahzeh2024";
-const char* mqttServer = "192.168.1.3";
+const char* ssid = "wifissid";
+const char* password = "password";
+const char* mqttServer = "ip";
 const int mqttPort = 1883;
 const char* mqttUser = "";
 const char* mqttPassword = "";
